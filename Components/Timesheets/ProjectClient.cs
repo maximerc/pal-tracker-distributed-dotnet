@@ -1,25 +1,50 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Timesheets
 {
     public class ProjectClient : IProjectClient
     {
         private readonly HttpClient _client;
-
-        public ProjectClient(HttpClient client)
+        private readonly ILogger<ProjectClient> _logger;
+        
+        private Dictionary<long, ProjectInfo> _cache;
+        
+        public ProjectClient(HttpClient client, ILogger<ProjectClient> logger)
         {
             _client = client;
+            _logger = logger;
+            _cache = new Dictionary<long, ProjectInfo>();
         }
-
+        
         public async Task<ProjectInfo> Get(long projectId)
+        {
+            return await new GetProjectCommand(DoGet, DoGetFromCache, projectId).ExecuteAsync();
+        }        
+
+        public async Task<ProjectInfo> DoGet(long projectId)
         {
             _client.DefaultRequestHeaders.Accept.Clear();
             var streamTask = _client.GetStreamAsync($"project?projectId={projectId}");
 
+            _logger.LogInformation($"Attempting to fetch projectId: {projectId}");
+            
             var serializer = new DataContractJsonSerializer(typeof(ProjectInfo));
-            return serializer.ReadObject(await streamTask) as ProjectInfo;
+            var project = serializer.ReadObject(await streamTask) as ProjectInfo;
+            
+            _cache.Add(projectId, project);
+            _logger.LogInformation($"Caching projectId: {projectId}");
+            
+            return project;
         }
+        
+        public Task<ProjectInfo> DoGetFromCache(long projectId)
+        {
+            _logger.LogInformation($"Retrieving from cache projectId: {projectId}");
+            return Task.FromResult(_cache[projectId]);
+        }        
     }
 }
