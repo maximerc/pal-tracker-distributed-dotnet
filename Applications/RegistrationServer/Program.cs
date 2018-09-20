@@ -22,5 +22,7 @@ namespace RegistrationServer
                 .UseCloudFoundryHosting()
                 .AddCloudFoundry()
                 .UseStartup<Startup>();
+        //.UseUrls("http://localhost:8883/");
+
     }
 }

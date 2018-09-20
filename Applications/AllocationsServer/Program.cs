@@ -22,5 +22,7 @@ namespace AllocationsServer
                 .UseCloudFoundryHosting()
                 .AddCloudFoundry()
                 .UseStartup<Startup>();
+
+        //.UseUrls("http://localhost:8881/");
     }
 }

@@ -22,5 +22,7 @@ namespace TimesheetsServer
                 .UseCloudFoundryHosting()
                 .AddCloudFoundry()
                 .UseStartup<Startup>();
+        //.UseUrls("http://localhost:8883/");
+
     }
 }
