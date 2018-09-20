@@ -27,6 +27,8 @@ namespace IntegrationTest
                 .Database("tracker_registration_dotnet_test")
                 .SetEnvironmentVariable("DISABLE_AUTH", "true")
                 .SetEnvironmentVariable("EUREKA__CLIENT__SHOULDREGISTERWITHEUREKA", "false")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__ENABLED", "false")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__FAILFAST", "false")
                 .Build();
 
             _allocationsServer = TestAppServerBuilder()
@@ -36,6 +38,8 @@ namespace IntegrationTest
                 .SetEnvironmentVariable("REGISTRATION_SERVER_ENDPOINT", _registrationServer.Url())
                 .SetEnvironmentVariable("EUREKA__CLIENT__SHOULDFETCHREGISTRY", "false")
                 .SetEnvironmentVariable("DISABLE_AUTH", "true")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__ENABLED", "false")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__FAILFAST", "false")                
                 .Build();
 
             _backlogServer = TestAppServerBuilder()
@@ -45,6 +49,8 @@ namespace IntegrationTest
                 .SetEnvironmentVariable("REGISTRATION_SERVER_ENDPOINT", _registrationServer.Url())
                 .SetEnvironmentVariable("EUREKA__CLIENT__SHOULDFETCHREGISTRY", "false")
                 .SetEnvironmentVariable("DISABLE_AUTH", "true")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__ENABLED", "false")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__FAILFAST", "false")                
                 .Build();
 
             _timesheetsServer = TestAppServerBuilder()
@@ -54,6 +60,8 @@ namespace IntegrationTest
                 .SetEnvironmentVariable("REGISTRATION_SERVER_ENDPOINT", _registrationServer.Url())
                 .SetEnvironmentVariable("EUREKA__CLIENT__SHOULDFETCHREGISTRY", "false")
                 .SetEnvironmentVariable("DISABLE_AUTH", "true")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__ENABLED", "false")
+                .SetEnvironmentVariable("SPRING__CLOUD__CONFIG__FAILFAST", "false")                
                 .Build();
         }
 
